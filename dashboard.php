@@ -2,7 +2,7 @@
 <?php
 session_start();
 include 'database/config.php';
-if($_GET['key']){
+if(isset($_GET['key'])){
 $key=$_GET['key'];
 mysql_query("DELETE FROM users where id='$key'");
 

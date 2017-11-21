@@ -5,15 +5,7 @@ $username="";
 $password="";
 
 include 'database/config.php';
-if(isset($_POST['submit'])){
-$username=$_POST['username'];
-$password=$_POST['password'];
-$key=$_POST['id'];
-print_r($_POST);
-echo $username;
-mysql_query("UPDATE  users SET username='$username' and password='$password' where id='$key'");
 
-}
 if(!isset($_SESSION['user']))
 {
 
@@ -27,7 +19,24 @@ header("Location:login.php");
 // $res=mysql_query($sql);
 // $data=mysql_fetch_array($res);
 // }
+if(isset($_POST['submit'])){
+$username=$_POST['username'];
+$password=$_POST['password'];
+$ky=intval($_POST['id']);
 
+
+mysql_query("UPDATE  users SET `username`='$username' , password='$password' where `id`='$ky'") or die ('Error updating database: ' . mysql_error());;
+
+
+$res=  mysql_query("select * from users where id='$ky'");
+$res=mysql_fetch_assoc($res);
+$username=$res['username'];
+echo $username;
+
+$password=$res['password'];
+echo $password;
+
+}
 if(isset($_GET['id'])){
   $id=$_GET['id'];
 $res=  mysql_query("select * from users where id='$id'");
