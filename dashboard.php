@@ -47,9 +47,13 @@ header("Location:login.php");
 <div class="panel-body">
 <table class="table table-responsive">
 <tr>
-  <th>
+
 <th>
   Username</th>
+  <th> <form method="POST" action=""><label>Search username</label>
+<Input style="width:150px;"  type="text" name="username" placeholder="Search Username">
+    <input style="width:150px;"  class="btn btn-primary" type="submit" name="search" value="search">
+   </form> </td>
 </tr>
 <tr>
 
@@ -75,8 +79,18 @@ My users: You are logged in as <span class="badge badge-info"><?php echo $_SESSI
 <td>Password</td>
 </tr>
 <?php
+$res="";
 
+if(isset($_POST['search'])){
+
+  $username=$_POST['username'];
+
+
+  $res=mysql_query("select * from users where username='$username'");
+}else{
 $res=mysql_query("select * from users");
+}
+
 $count=0;
 while ($row = mysql_fetch_array($res,MYSQL_ASSOC))
 {
@@ -87,7 +101,8 @@ while ($row = mysql_fetch_array($res,MYSQL_ASSOC))
 <td><?php echo $row['username'];  ?></td>
 <td><?php echo $row['password'];  ?></td>
 <td><a class="btn " href="edit.php?id=<?php echo $row['id']; ?>">EDIT</a>
-<td><a class="btn " href="dashboard.php?key=<?php echo $row['id']; ?>">Delete</a>
+<td><a class="btn " href="dashboard.php?key=<?php echo $row['id']; ?>">Delete</a
+
 </tr>
 <?php
 

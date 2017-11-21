@@ -31,10 +31,9 @@ mysql_query("UPDATE  users SET `username`='$username' , password='$password' whe
 $res=  mysql_query("select * from users where id='$ky'");
 $res=mysql_fetch_assoc($res);
 $username=$res['username'];
-echo $username;
 
 $password=$res['password'];
-echo $password;
+
 
 }
 if(isset($_GET['id'])){
