@@ -1,10 +1,17 @@
 
 <?php
 session_start();
+$username="";
+$password="";
+
 include 'database/config.php';
-if($_GET['key']){
-$key=$_GET['key'];
-mysql_query("DELETE FROM users where id='$key'");
+if(isset($_POST['submit'])){
+$username=$_POST['username'];
+$password=$_POST['password'];
+$key=$_POST['id'];
+print_r($_POST);
+echo $username;
+mysql_query("UPDATE  users SET username='$username' and password='$password' where id='$key'");
 
 }
 if(!isset($_SESSION['user']))
@@ -20,6 +27,16 @@ header("Location:login.php");
 // $res=mysql_query($sql);
 // $data=mysql_fetch_array($res);
 // }
+
+if(isset($_GET['id'])){
+  $id=$_GET['id'];
+$res=  mysql_query("select * from users where id='$id'");
+$res=mysql_fetch_assoc($res);
+$username=$res['username'];
+$password=$res['password'];
+
+}
+
  ?>
 
 <!DOCTYPE html>
@@ -39,62 +56,21 @@ header("Location:login.php");
 
 <div class="container">
   <div class="row">
-    <div class="col-md-3" style="margin-top:10%;position:relative;">
+<div class="col-md-6 col-md-offset-3" style="margin-top:10%;position:relative;">
 <div class="panel panel-default">
 <div class="panel-heading">
-
+Modify user: You are logged in as <span class="badge badge-info"><?php echo $_SESSION['user'];  ?></span><span> <a href="logout.php">Logout</a>
 </div>
 <div class="panel-body">
-<table class="table table-responsive">
-<tr>
-  <th>
-<th>
-  Username</th>
-</tr>
-<tr>
-
-
-</tr>
-
-</table>
-</div>
-</div>
-</div>
-
-    <div class="col-md-6" style="margin-top:10%;position:relative;">
-<div class="panel panel-default">
-<div class="panel-heading">
-My users: You are logged in as <span class="badge badge-info"><?php echo $_SESSION['user'];  ?></span><span> <a href="logout.php">Logout</a>
-</div>
-<div class="panel-body">
-<table class="table table-responsive table-striped">
-
-<tr>
-<td>#</td>
-<td>Username</td>
-<td>Password</td>
-</tr>
-<?php
-
-$res=mysql_query("select * from users");
-$count=0;
-while ($row = mysql_fetch_array($res,MYSQL_ASSOC))
-{
-  $count++;
- ?>
-<tr>
-  <td><?php echo $count;  ?></td>
-<td><?php echo $row['username'];  ?></td>
-<td><?php echo $row['password'];  ?></td>
-<td><a class="btn " href="edit.php?id=<?php echo $row['id']; ?>">EDIT</a>
-<td><a class="btn " href="dashboard.php?key=<?php echo $row['id']; ?>">Delete</a>
-</tr>
-<?php
-
-}
-
- ?>
-</table>
+<form action="" method="post">
+  <input type="hidden" name="id" value="<?php if(isset($_GET['id'])){echo $_GET['id'];} ?>">
+<label>Username</label>
+<input type="text" name="username" value="<?php echo $username;  ?>" class="form-control">
+<label>Password</label>
+<input type="text" name="password" value="<?php echo $password;  ?>" class="form-control">
+<br>
+<input type="submit" name="submit" value="Modify">
+</form>
 </div>
 
   </div>
